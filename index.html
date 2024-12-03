@@ -1,226 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://js.paystack.co/v2/inline.js"></script> <!-- Paystack library -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Telegram WebApp library -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <title>Checkout</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Telegram Mini Apps Vanilla JS Sample App</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
+            --bg-color: var(--tg-theme-bg-color);
+            font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--tg-theme-text-color);
+            margin: 48px 24px;
+            padding: 0;
+            color-scheme: var(--tg-color-scheme);
         }
 
-        .container {
-            width: 90%;
-            margin-top: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        a {
+            color: var(--tg-theme-link-color);
+        }
+        #viewport {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: var(--tg-viewport-stable-height, 100vh);
+            pointer-events: none;
+            transition: all .2s ease;
+        }
+        #viewport:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border-width: 4px;
+            border-style: solid;
+            border-image: linear-gradient(45deg, rgba(64, 224, 208, .5), rgba(173, 255, 47, .5)) 1;
         }
 
-        .summ-container {
-            margin-top: 20px;
-            width: 90%;
-            height: 20vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background-color: #0047ab;
-            color: white;
+        #viewport-params-size,
+        #viewport-params-expand {
+            content: attr(text);
+            position: absolute;
+            display: inline-block;
+            background: var(--tg-theme-link-color, rgb(64, 224, 208));
+            right: 4px;
+            left: auto;
+            font-size: 8px;
+            padding: 4px;
+            vertical-align: top;
         }
-
-        .payop-container {
-            box-sizing: border-box;
-            height: 10vh;
-            gap: 15px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            background-color: white;
+        #viewport-params-size {
+            top: 4px;
         }
-
-        .payop-container button {
-            background-color: transparent;
-            border: 2px solid grey;
-            border-radius: 10px;
-            margin-top: 15px;
-            padding: 0px 30px;
-            font-size: 16px;
-            color: black;
-            height: 35px;
-            cursor: pointer;
-            transition: border-color 0.3s ease;
-        }
-
-        .payop-container button.active {
-            background-color: #0047ab;
-            color: white;
-            border-color: #0047ab;
-        }
-
-        .checkout {
-            width: 100%;
-            height: 50px;
-            padding: 10px;
-            font-size: 16px;
-            font-family: Roboto;
-            background-color: #0047ab;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .card-payment-form {
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .card-payment-form input {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #0047ab;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        #paystack-button {
-            width: 100%;
-            height: 50px;
-            padding: 10px;
-            font-size: 16px;
-            font-family: Roboto;
-            background-color: #0047ab;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
+        #viewport-params-expand {
+            top: 30px;
         }
     </style>
 </head>
+
 <body>
-    <div class="summ-container">
-        <table>
-            <tr>
-                <td>Subtotal</td>
-                <td id="subtotal">£76.99</td>
-            </tr>
-            <tr>
-                <td>Tax</td>
-                <td id="tax">£0.00</td>
-            </tr>
-            <tr>
-                <td>Total</td>
-                <td id="total">£78.99</td>
-            </tr>
-        </table>
-    </div>
+    <main>
+        <div align="center">
+            <a href="https://ton.org/"><img width="48" src="./assets/tapps.png" alt="logo of telegram web apps"></a>
+        </div>
+        <h1>Modals</h1>
+        <button onclick="Telegram.WebApp.showAlert('Hello World!');">Launch Alert</button>
+        <button onclick="showPopup();">Launch Popup</button>
 
-    <div class="payop-container">
-        <button class="active" data-payment="card"><span class="material-icons">credit_card</span></button>
-        <button data-payment="mobile"><span class="material-icons">smartphone</span></button>
-        <button data-payment="crypto"><span class="material-icons">currency_bitcoin</span></button>
-    </div>
+        <h1>Links</h1>
+        <ul>
+            <li>
+                <a href="javascript:Telegram.WebApp.openTelegramLink('https://t.me/trendingapps');">Open link within Telegram</a>
+            </li>
+            <li>
+                <a href="javascript:Telegram.WebApp.openLink('https://ton.org/');">Open link in external browser</a>
+            </li>
+            <li>
+                <a href="javascript:Telegram.WebApp.openLink('https://telegra.ph/api',{try_instant_view:true});">Open link inside Telegram webview</a>
+            </li>
+        </ul>
 
-    <div class="container" id="payment-form-container">
-        <!-- Payment form dynamically inserted here -->
-    </div>
-
+        <h1>Buttons</h1>
+        <button onclick="Telegram.WebApp.expand();">Expand Webview</button>
+        <button onclick="toggleMainButton();">Toggle Main Button</button>
+    </main>
+    <div id="viewport"></div>
+    <div id="viewport-params-size"></div>
+    <div id="viewport-params-expand"></div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-    // Initialize Telegram WebApp
-    window.Telegram.WebApp.ready();
-    const telegramData = window.Telegram.WebApp.initData || {};
-    console.log("Telegram WebApp initialized:", telegramData);
+        // Init TWA
+        Telegram.WebApp.ready();
 
-    const paymentFormContainer = document.getElementById("payment-form-container");
-    const mainButton = window.Telegram.WebApp.MainButton;
-
-    // Configure Main Button
-    mainButton.text = "Pay Now";
-    mainButton.color = "#0047ab";
-    mainButton.disable();
-
-    // Payment buttons
-    const buttons = document.querySelectorAll('.payop-container button');
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            buttons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            const paymentType = button.getAttribute('data-payment');
-            loadPaymentForm(paymentType);
+        // Event occurs whenever theme settings are changed in the user's Telegram app (including switching to night mode).
+        Telegram.WebApp.onEvent('themeChanged', function() {
+            document.documentElement.className = Telegram.WebApp.colorScheme;
         });
-    });
 
-    // Load payment form based on payment type
-    function loadPaymentForm(paymentType) {
-        paymentFormContainer.innerHTML = ""; // Clear any existing form
-        mainButton.disable(); // Disable the button initially
+        // Show main button
+        Telegram.WebApp.MainButton.setParams({
+            text: 'Main Button'
+        });
+        Telegram.WebApp.MainButton.onClick(function () {
+            Telegram.WebApp.showAlert('Main Button was clicked')
+        });        
+        Telegram.WebApp.MainButton.show();
 
-        if (paymentType === 'card') {
-            paymentFormContainer.innerHTML = `
-                <form class="card-payment-form">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="youremail@yahoo.com" required>
-                </form>
-            `;
-            const emailInput = document.getElementById("email");
-            emailInput.addEventListener("input", () => {
-                if (emailInput.value) {
-                    mainButton.enable();
-                    mainButton.onClick(() => payWithPaystack(emailInput.value));
-                } else {
-                    mainButton.disable();
+        // Function to call showPopup API
+        function showPopup() {
+            Telegram.WebApp.showPopup({
+                title: 'Title',
+                message: 'Some message',
+                buttons: [
+                    {id: 'link', type: 'default', text: 'Open ton.org'},
+                    {type: 'cancel'},
+                ]
+            }, function(btn) {
+                if (btn === 'link') {
+                    Telegram.WebApp.openLink('https://ton.org/');
                 }
             });
-        } else if (paymentType === 'crypto') {
-            paymentFormContainer.innerHTML = `
-                <div>Scan the QR code below to complete your payment.</div>
-                <div><strong>[QR Code Placeholder]</strong></div>
-            `;
-            mainButton.enable();
-            mainButton.onClick(() => {
-                window.Telegram.WebApp.showAlert("Crypto payment initiated. Please scan the QR code.");
-            });
-        }
-    }
+        };
 
-    // Pay with Paystack function
-    function payWithPaystack(email) {
-        const paystack = new PaystackPop();
-        paystack.newTransaction({
-            key: "", // Replace with your Paystack public key
-            email: email,
-            amount: 7899 * 100,
-            currency: "KES", // Adjust currency
-            callback: function(response) {
-                window.Telegram.WebApp.showAlert(`Payment Successful! Ref: ${response.reference}`);
-                console.log("Payment successful:", response);
-            },
-            onClose: function() {
-                window.Telegram.WebApp.showAlert("Payment popup closed.");
+        // Function to toggle main TWA button
+        function toggleMainButton() {
+            if (Telegram.WebApp.MainButton.isVisible) {
+                Telegram.WebApp.MainButton.hide();
+            } else {
+                Telegram.WebApp.MainButton.show();
             }
-        });
-    }
+        };
 
-    // Load default payment form
-    loadPaymentForm('card');
-    </script> 
+        function setViewportData() {
+            var sizeEl = document.getElementById('viewport-params-size');
+            sizeEl.innerText = 'width: ' + window.innerWidth + ' x ' + 
+                'height: ' + Telegram.WebApp.viewportStableHeight;
+
+            var expandEl = document.querySelector('#viewport-params-expand');
+            expandEl.innerText = 'Is Expanded: ' + (Telegram.WebApp.isExpanded ? 'true' : 'false');
+        }
+
+        Telegram.WebApp.setHeaderColor('secondary_bg_color');
+
+        setViewportData();
+        Telegram.WebApp.onEvent('viewportChanged', setViewportData);
+
+        Telegram.WebApp.onEvent('themeChanged', function() {
+            document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
+        });
+
+    </script>
+
+    <!-- Eruda is console for mobile browsers -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
 </body>
-        </html>
+</html>
