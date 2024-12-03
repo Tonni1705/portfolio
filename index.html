@@ -143,72 +143,84 @@
     </div>
 
     <script>
-        // Initialize Telegram WebApp
-        window.Telegram.WebApp.ready();
-        const telegramData = window.Telegram.WebApp.initData || {};
-        console.log("Telegram WebApp initialized:", telegramData);
+    // Initialize Telegram WebApp
+    window.Telegram.WebApp.ready();
+    const telegramData = window.Telegram.WebApp.initData || {};
+    console.log("Telegram WebApp initialized:", telegramData);
 
-        const paymentFormContainer = document.getElementById("payment-form-container");
+    const paymentFormContainer = document.getElementById("payment-form-container");
+    const mainButton = window.Telegram.WebApp.MainButton;
 
-        // Payment buttons
-        const buttons = document.querySelectorAll('.payop-container button');
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                buttons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+    // Configure Main Button
+    mainButton.text = "Pay Now";
+    mainButton.color = "#0047ab";
+    mainButton.disable();
 
-                const paymentType = button.getAttribute('data-payment');
-                loadPaymentForm(paymentType);
-            });
+    // Payment buttons
+    const buttons = document.querySelectorAll('.payop-container button');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const paymentType = button.getAttribute('data-payment');
+            loadPaymentForm(paymentType);
         });
+    });
 
-        // Load payment form based on payment type
-        function loadPaymentForm(paymentType) {
-            paymentFormContainer.innerHTML = ""; // Clear any existing form
+    // Load payment form based on payment type
+    function loadPaymentForm(paymentType) {
+        paymentFormContainer.innerHTML = ""; // Clear any existing form
+        mainButton.disable(); // Disable the button initially
 
-            if (paymentType === 'card') {
-                paymentFormContainer.innerHTML = `
-                    <form class="card-payment-form">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="youremail@yahoo.com" required>
-                    </form>
-                    <button id="paystack-button" onclick="payWithPaystack()">Pay with Paystack</button>
-                `;
-            } else if (paymentType === 'crypto') {
-                paymentFormContainer.innerHTML = `
-                    <div>Scan the QR code below to complete your payment.</div>
-                    <div><strong>[QR Code Placeholder]</strong></div>
-                `;
-            }
-        }
-
-        // Pay with Paystack function
-        function payWithPaystack() {
-            const email = document.getElementById("email").value;
-
-            if (!email) {
-                window.Telegram.WebApp.showAlert("Please provide your email.");
-                return;
-            }
-
-            const paystack = new PaystackPop();
-            paystack.newTransaction({
-                key: "", // Replace with your Paystack public key
-                email: email,
-                amount: 7899 * 100,
-                Currency:KES, // Convert to kobo
-                callback: function(response) {
-                    window.Telegram.WebApp.showAlert(`Payment Successful! Ref: ${response.reference}`);
-                    console.log("Payment successful:", response);
-                },
-                onClose: function() {
-                    window.Telegram.WebApp.showAlert("Payment popup closed.");
+        if (paymentType === 'card') {
+            paymentFormContainer.innerHTML = `
+                <form class="card-payment-form">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="youremail@yahoo.com" required>
+                </form>
+            `;
+            const emailInput = document.getElementById("email");
+            emailInput.addEventListener("input", () => {
+                if (emailInput.value) {
+                    mainButton.enable();
+                    mainButton.onClick(() => payWithPaystack(emailInput.value));
+                } else {
+                    mainButton.disable();
                 }
             });
+        } else if (paymentType === 'crypto') {
+            paymentFormContainer.innerHTML = `
+                <div>Scan the QR code below to complete your payment.</div>
+                <div><strong>[QR Code Placeholder]</strong></div>
+            `;
+            mainButton.enable();
+            mainButton.onClick(() => {
+                window.Telegram.WebApp.showAlert("Crypto payment initiated. Please scan the QR code.");
+            });
         }
+    }
 
-        // Load default payment form
-        loadPaymentForm('card');
-    </script>
+    // Pay with Paystack function
+    function payWithPaystack(email) {
+        const paystack = new PaystackPop();
+        paystack.newTransaction({
+            key: "", // Replace with your Paystack public key
+            email: email,
+            amount: 7899 * 100,
+            currency: "KES", // Adjust currency
+            callback: function(response) {
+                window.Telegram.WebApp.showAlert(`Payment Successful! Ref: ${response.reference}`);
+                console.log("Payment successful:", response);
+            },
+            onClose: function() {
+                window.Telegram.WebApp.showAlert("Payment popup closed.");
+            }
+        });
+    }
+
+    // Load default payment form
+    loadPaymentForm('card');
+    </script> 
 </body>
         </html>
