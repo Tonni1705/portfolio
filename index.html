@@ -193,9 +193,10 @@
 
             const paystack = new PaystackPop();
             paystack.newTransaction({
-                key: "your_public_key", // Replace with your Paystack public key
+                key: "", // Replace with your Paystack public key
                 email: email,
-                amount: 7899 * 100, // Convert to kobo
+                amount: 7899 * 100,
+                Currency:KES, // Convert to kobo
                 callback: function(response) {
                     window.Telegram.WebApp.showAlert(`Payment Successful! Ref: ${response.reference}`);
                     console.log("Payment successful:", response);
