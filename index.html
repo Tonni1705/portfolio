@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://js.paystack.co/v2/inline.js"></script> <!-- Paystack library -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Telegram WebApp library -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     <title>Checkout</title>
     <style>
         body {
@@ -21,7 +21,6 @@
         .container {
             width: 90%;
             margin-top: 20px;
-            border:none;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -33,11 +32,11 @@
             margin-top: 20px;
             width: 90%;
             height: 20vh;
-            display:flex;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius:10px;
+            border-radius: 10px;
             background-color: #0047ab;
             color: white;
         }
@@ -55,15 +54,13 @@
         .payop-container button {
             background-color: transparent;
             border: 2px solid grey;
-            border-radius:10px;
-            margin-top:15px;
+            border-radius: 10px;
+            margin-top: 15px;
             padding: 0px 30px;
             font-size: 16px;
             color: black;
-            height:35px;
+            height: 35px;
             cursor: pointer;
-            align-items: center;
-            justify-content: center;
             transition: border-color 0.3s ease;
         }
 
@@ -78,7 +75,7 @@
             height: 50px;
             padding: 10px;
             font-size: 16px;
-            font-family:Roboto;
+            font-family: Roboto;
             background-color: #0047ab;
             color: white;
             border: none;
@@ -86,30 +83,14 @@
             cursor: pointer;
         }
 
-        .card-payment-form,
-        .mobile-payment-form {
+        .card-payment-form {
             width: 90%;
-            padding-top:0px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .card-payment-form label,
-        .mobile-payment-form label {
-            font-size: 14px;
-            color: darkblue;
-        }
-
-        .card-payment-form input:focus,
-        .mobile-payment-form input:focus {
-            border-color: #0047ab;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 71, 171, 0.5);
-        }
-
-        .card-payment-form input,
-        .mobile-payment-form input {
+        .card-payment-form input {
             width: 100%;
             padding: 10px;
             font-size: 14px;
@@ -118,38 +99,12 @@
             box-sizing: border-box;
         }
 
-        .save-payment-info {
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .save-payment-info label {
-            display: flex row;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .save-payment-info input[type="checkbox"] {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-
-        .qr-code-container {
-            display: none;
-            width: 100%;
-            text-align: center;
-            margin-top: 20px;
-        }
-
         #paystack-button {
             width: 100%;
             height: 50px;
             padding: 10px;
             font-size: 16px;
-            font-family:Roboto;
+            font-family: Roboto;
             background-color: #0047ab;
             color: white;
             border: none;
@@ -157,11 +112,6 @@
             cursor: pointer;
             margin-top: 20px;
         }
-
-        #paystack-button:hover {
-            background-color: #003366;
-        }
-
     </style>
 </head>
 <body>
@@ -189,19 +139,18 @@
     </div>
 
     <div class="container" id="payment-form-container">
-        <!-- Dynamic payment form will appear here -->
-    </div>
-
-    <div id="qr-code-container" class="qr-code-container">
-        <!-- QR Code will be generated here for crypto payments -->
+        <!-- Payment form dynamically inserted here -->
     </div>
 
     <script>
-        // Payment form containers
-        const paymentFormContainer = document.getElementById("payment-form-container");
-        const qrCodeContainer = document.getElementById("qr-code-container");
+        // Initialize Telegram WebApp
+        window.Telegram.WebApp.ready();
+        const telegramData = window.Telegram.WebApp.initData || {};
+        console.log("Telegram WebApp initialized:", telegramData);
 
-        // Payment option buttons
+        const paymentFormContainer = document.getElementById("payment-form-container");
+
+        // Payment buttons
         const buttons = document.querySelectorAll('.payop-container button');
         buttons.forEach(button => {
             button.addEventListener('click', () => {
@@ -213,7 +162,7 @@
             });
         });
 
-        // Load the appropriate payment form
+        // Load payment form based on payment type
         function loadPaymentForm(paymentType) {
             paymentFormContainer.innerHTML = ""; // Clear any existing form
 
@@ -221,45 +170,44 @@
                 paymentFormContainer.innerHTML = `
                     <form class="card-payment-form">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" aria-label="Email Address" placeholder="youremail@yahoo.com" required>
-
-                        <label for="card-number">Card Number</label>
-                        <input type="text" id="card-number" name="card-number" placeholder="Card Number" required>
-
-                        <div style="display: flex; gap: 15px;">
-                            <div>
-                                <label for="expiry-date">Expiry Date</label>
-                                <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
-                            </div>
-                            <div>
-                                <label for="cvv">CVV</label>
-                                <input type="text" id="cvv" name="cvv" placeholder="CVV" required>
-                            </div>
-                        </div>
-
-                        <div class="save-payment-info">
-                            <input type="checkbox" id="save-payment-info" name="save-payment-info">
-                            <label for="save-payment-info">Save payment information for future use</label>
-                        </div>
-                    </form>
-                    <button id="paystack-button" onclick="payWithPaystack()">Pay with Paystack</button>
-                `;
-            } else if (paymentType === 'mobile') {
-                paymentFormContainer.innerHTML = `
-                    <form class="mobile-payment-form">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" aria-label="Email Address" placeholder="youremail@yahoo.com" required>
-
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                        <input type="email" id="email" name="email" placeholder="youremail@yahoo.com" required>
                     </form>
                     <button id="paystack-button" onclick="payWithPaystack()">Pay with Paystack</button>
                 `;
             } else if (paymentType === 'crypto') {
-                qrCodeContainer.style.display = "block"; // Show the QR Code container
-                generateQRCode('crypto_address_or_data'); // Generate the QR Code for crypto payment
+                paymentFormContainer.innerHTML = `
+                    <div>Scan the QR code below to complete your payment.</div>
+                    <div><strong>[QR Code Placeholder]</strong></div>
+                `;
             }
         }
 
-        // Function to generate a QR code for cryptocurrency payments
-        function generateQRCode(data)
+        // Pay with Paystack function
+        function payWithPaystack() {
+            const email = document.getElementById("email").value;
+
+            if (!email) {
+                window.Telegram.WebApp.showAlert("Please provide your email.");
+                return;
+            }
+
+            const paystack = new PaystackPop();
+            paystack.newTransaction({
+                key: "your_public_key", // Replace with your Paystack public key
+                email: email,
+                amount: 7899 * 100, // Convert to kobo
+                callback: function(response) {
+                    window.Telegram.WebApp.showAlert(`Payment Successful! Ref: ${response.reference}`);
+                    console.log("Payment successful:", response);
+                },
+                onClose: function() {
+                    window.Telegram.WebApp.showAlert("Payment popup closed.");
+                }
+            });
+        }
+
+        // Load default payment form
+        loadPaymentForm('card');
+    </script>
+</body>
+        </html>
