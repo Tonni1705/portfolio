@@ -1,393 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Anthony J</title>
-    <meta name="description" content="Portfolio Template for Developer" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://js.paystack.co/v2/inline.js"></script> <!-- Paystack library -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Checkout</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
 
-    <link rel="stylesheet" href="style.css" />
+        .container {
+            width: 90%;
+            margin-top: 20px;
+            border:none;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <header class="header">
-      <div class="header__content">
-        <div class="header__logo-container">
-          <div class="header__logo-img-cont">
-            <img
-              src="assets/jpg/hawaii 2.jpg"
-              alt="Ram Maheshwari Logo Image"
-              class="header__logo-img"
-            />
-          </div>
-          <span class="header__logo-sub">Anthony Juma</span>
-        </div>
-        <div class="header__main">
-          <ul class="header__links">
-            <li class="header__link-wrapper">
-              <a href="./index.html" class="header__link"> Home </a>
-            </li>
-            <li class="header__link-wrapper">
-              <a href="./index.html#about" 
- class="header__link"> Blog </a>
-                  </li>
-                  <li class="header__link-wrapper">
-                    <a href="./index.html#about" class="header__link">About </a>
-            </li>
-            <li class="header__link-wrapper">
-              <a href="./index.html#projects" class="header__link">
-                Publications
-              </a>
-            </li>
-            <li class="header__link-wrapper">
-              <a href="./index.html#contact" class="header__link"> Contact </a>
-            </li>
-          </ul>
-          <div class="header__main-ham-menu-cont">
-            <img
-              src="assets/svg/ham-menu.svg"
-              alt="hamburger menu"
-              class="header__main-ham-menu"
-            />
-            <img
-              src="assets/svg/ham-menu-close.svg"
-              alt="hamburger menu close"
-              class="header__main-ham-menu-close d-none"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="header__sm-menu">
-        <div class="header__sm-menu-content">
-          <ul class="header__sm-menu-links">
-            <li class="header__sm-menu-link">
-              <a href="./index.html"> Home </a>
-            </li>
+        .summ-container {
+            margin-top: 20px;
+            width: 90%;
+            height: 20vh;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius:10px;
+            background-color: #0047ab;
+            color: white;
+        }
 
-            <li class="header__sm-menu-link">
-              <a href="./index.html#about"> About </a>
-            </li>
-              
-             <li class="header__sm-menu-link">
-                <a href="./index.html#about"> Blog </a>
-              </li>
+        .payop-container {
+            box-sizing: border-box;
+            height: 10vh;
+            gap: 15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            background-color: white;
+        }
 
-            <li class="header__sm-menu-link">
-              <a href="./index.html#projects"> Publications </a>
-            </li>
+        .payop-container button {
+            background-color: transparent;
+            border: 2px solid grey;
+            border-radius:10px;
+            margin-top:15px;
+            padding: 0px 30px;
+            font-size: 16px;
+            color: black;
+            height:35px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.3s ease;
+        }
 
-            <li class="header__sm-menu-link">
-              <a href="./index.html#contact"> Contact </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </header>
-    <section class="home-hero">
-      <div class="home-hero__content">
+        .payop-container button.active {
+            background-color: #0047ab;
+            color: white;
+            border-color: #0047ab;
+        }
 
-        <h1 class="heading-primary">Hey, My name is Anthony Juma</h1>
-        <div class="home-hero__info">
-          <p class="text-primary">
-            My current focus is on gaining practical experience in various areas of criminal investigations,including fraud investigations, corpporate investigations,loss prevention, financial investigtation, cybercrime and executive protection. I am keen on applying both traditional investigation technique and mordern forensic technologies in my work.
-            Profesional Affiliations.
-            I am actively
-          </p>
-        </div>
-        <div class="home-hero__cta">
-          <a href="./#projects" class="btn btn--bg">Projects</a>
-        </div>
-      </div>
-      <div class="home-hero__socials">
-        <div class="home-hero__social">
-          <a href="https://www.linkedin.com/in/anthony-juma-136b1823b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app/" class="home-hero__social-icon-link">
-            <img
-              src="./assets/png/linkedin-ico.png"
-              alt="icon"
-              class="home-hero__social-icon"
-            />
-          </a>
-        </div>
-        <div class="home-hero__social">
-          <a href="https://github.com/Tonni1705" class="home-hero__social-icon-link">
-            <img
-              src="./assets/png/github-ico.png"
-              alt="icon"
-              class="home-hero__social-icon"
-            />
-          </a>
-        </div>
-        <div class="home-hero__social">
-          <a href="https://twitter.com/LuoPrince4?t=J--tZN11MCVGyMZbidTiNQ&s=35" class="home-hero__social-icon-link">
-            <img
-              src="./assets/png/twitter-ico.png"
-              alt="icon"
-              class="home-hero__social-icon"
-            />
-          </a>
-        </div>
-        <div class="home-hero__social">
-          <a href="https://www.youtube.com/@tonni_1705" class="home-hero__social-icon-link">
-            <img
-              src="./assets/png/yt-ico.png"
-              alt="icon"
-              class="home-hero__social-icon"
-            />
-          </a>
-        </div>
-        <div class="home-hero__social">
-          <a
-            href="https://www.instagram.com/tonni_1705?igsh=YzljYTk1ODg3Zg=="
-            class="home-hero__social-icon-link home-hero__social-icon-link--bd-none"
-          >
-            <img
-              src="./assets/png/insta-ico.png"
-              alt="icon"
-              class="home-hero__social-icon"
-            />
-          </a>
-        </div>
-      </div>
-      <div class="home-hero__mouse-scroll-cont">
-        <div class="mouse"></div>
-      </div>
-    </section>
-    <section id="about" class="about sec-pad">
-      <div class="main-container">
-        <h2 class="heading heading-sec heading-sec__mb-med">
-          <span class="heading-sec__main">About Me</span>
-          <span class="heading-sec__sub">
-           
-              
-          </span>
-        </h2>
-        <div class="about__content">
-          <div class="about__content-main">
-            <h3 class="about__content-title">Get to know me!</h3>
-          
-              <!-- Existing content -->
-              <p class="about__content-details-para">
-                Hey! It's <strong>John Doe</strong> and I'm a <strong>Frontend Web Developer</strong> located in Los Angeles. I've done <strong>remote</strong> projects for agencies, consulted for startups, and collaborated with talented people to create <strong>digital products</strong> for both business and consumer use.
-              </p>
-              <p class="about__content-details-para">
-                I'm a bit of a digital product junky. Over the years, I've used hundreds of web and mobile apps in different industries and verticals. Feel free to <strong>contact</strong> me here.
-              </p>
-            </div>
-            <a href="./#contact" class="btn btn--med btn--theme dynamicBgClr">Contact</a>
-          </div>
-        </div>
+        .checkout {
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            font-size: 16px;
+            font-family:Roboto;
+            background-color: #0047ab;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
 
-          <div class="about__content-skills">
-            <h3 class="about__content-title">My Skills</h3>
-            <div class="skills">
-              <div class="skills__skill">Data Management</div>
-              <div class="skills__skill">Interviewing</div>
-              <div class="skills__skill">Documentation</div>
-              <div class="skills__skill">Research skills</div>
-              <div class="skills__skill">Technical skills</div>
-              <div class="skills__skill">Teamwork</div>
-              <div class="skills__skill">Ethical Decision Making</div>
-              <div class="skills__skill">Analytical skills</div>
-              <div class="skills__skill">Problem solving</div>
-              <div class="skills__skill">Critical thinking</div>
-              <div class="skills__skill">Web dev</div>
-              <div class="skills__skill">Bot</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="projects" class="projects sec-pad">
-      <div class="main-container">
-        <h2 class="heading heading-sec heading-sec__mb-bg">
-          <span class="heading-sec__main">Projects</span>
-          <span class="heading-sec__sub">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic facilis
-            tempora explicabo quae quod deserunt eius sapiente
-          </span>
-        </h2>
+        .card-payment-form,
+        .mobile-payment-form {
+            width: 90%;
+            padding-top:0px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-        <div class="projects__content">
-          <div class="projects__row">
-            <div class="projects__row-img-cont">
-              <img
-                src="./assets/jpg/project-mockup-example.jpeg"
-                alt="Software Screenshot"
-                class="projects__row-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="projects__row-content">
-              <h3 class="projects__row-content-title">Project 1</h3>
-              <p class="projects__row-content-desc">
-               bluh bluh bluh bluh
-              </p>
-              <a
-                href="./project-1.html"
-                class="btn btn--med btn--theme dynamicBgClr"
-                target="_blank"
-                >Study</a
-              >
-            </div>
-          </div>
-          <div class="projects__row">
-            <div class="projects__row-img-cont">
-              <img
-                src="./assets/jpg/project-mockup-example.jpeg"
-                alt="Software Screenshot"
-                class="projects__row-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="projects__row-content">
-              <h3 class="projects__row-content-title">Project 2</h3>
-              <p class="projects__row-content-desc">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic
-                facilis tempora, explicabo quae quod deserunt eius sapiente
-                praesentium.
-              </p>
-              <a
-                href="./project-2.html"
-                class="btn btn--med btn--theme dynamicBgClr"
-                target="_blank"
-                >Case Study</a
-              >
-            </div>
-          </div>
-          <div class="projects__row">
-            <div class="projects__row-img-cont">
-              <img
-                src="assets/jpg/project-mockup-example.jpeg"
-                alt="Software Screenshot"
-                class="projects__row-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="projects__row-content">
-              <h3 class="projects__row-content-title">Project 3</h3>
-              <p>This is an example of HTML code:</p>
-              <code>&lt;h1&gt;Hello, World!&lt;/h1&gt;</code>
+        .card-payment-form label,
+        .mobile-payment-form label {
+            font-size: 14px;
+            color: darkblue;
+        }
 
-              <p class="projects__row-content-desc">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic
-                facilis tempora, explicabo quae quod deserunt eius sapiente
-                praesentium.
-              </p>
-              <a
-                href="./project-3.html"
-                class="btn btn--med btn--theme dynamicBgClr"
-                target="_blank"
-                >Case Study</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="contact" class="contact sec-pad dynamicBg">
-      <div class="main-container">
-        <h2 class="heading heading-sec heading-sec__mb-med">
-          <span class="heading-sec__main heading-sec__main--lt">Contact</span>
-          <span class="heading-sec__sub heading-sec__sub--lt">
-           contact me any time
-          </span>
-        </h2>
-        <div class="contact__form-container">
-          <form
-            action="https://formspree.io/f/xqkrorgl"
-            method="POST"
-          >
-            <label>
-              Your email:
-              <input type="email" name="email">
-            </label>
-            <label>
-              Your message:
-              <textarea name="message"></textarea>
-            </label>
-            <!-- your other form fields go here -->
-            <button type="submit">Send</button>
-          </form>
-        </div>
-      </div>
-    </section>
-    <footer class="main-footer">
-      <div class="main-container">
-        <div class="main-footer__upper">
-          <div class="main-footer__row main-footer__row-1">
-            <h2 class="heading heading-sm main-footer__heading-sm">
-              <span>Social</span>
-            </h2>
-            <div class="main-footer__social-cont">
-              <a target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/anthony-juma-136b1823b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app/">
-                <img
-                  class="main-footer__icon"
-                  src="./assets/png/linkedin-ico.png"
-                  alt="icon"
-                />
-              </a>
-              <a target="_blank" rel="noreferrer" href="https://github.com/Tonni1705">
-                <img
-                  class="main-footer__icon"
-                  src="./assets/png/github-ico.png"
-                  alt="icon"
-                />
-              </a>
-              <a target="_blank" rel="noreferrer" href="https://twitter.com/LuoPrince4?t=J--tZN11MCVGyMZbidTiNQ&s=35">
-                <img
-                  class="main-footer__icon"
-                  src="./assets/png/twitter-ico.png"
-                  alt="icon"
-                />
-              </a>
-              <a target="_blank" rel="noreferrer" href="https://www.youtube.com/@tonni_1705">
-                <img
-                  class="main-footer__icon"
-                  src="./assets/png/yt-ico.png"
-                  alt="icon"
-                />
-              </a>
-              <a target="_blank" rel="noreferrer" href="https://www.instagram.com/tonni_1705?igsh=YzljYTk1ODg3Zg==">
-                <img
-                  class="main-footer__icon main-footer__icon--mr-none"
-                  src="./assets/png/insta-ico.png"
-                  alt="icon"
-                />
-              </a>
-            </div>
-          </div>
-          <div class="main-footer__row main-footer__row-2">
-            <a href="https://www.example.com">Click here</a>
+        .card-payment-form input:focus,
+        .mobile-payment-form input:focus {
+            border-color: #0047ab;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 71, 171, 0.5);
+        }
 
-            <h4 class="heading heading-sm text-lt">Contacts</h4>
-            <p class="main-footer__short-desc">
-             Anthony Juma
-             Mount Kenya University
-             General Kago rd
-             PO Box 461, Kiambu
-             Tel: 0742266538
-             anthonyjuma@proton.me
-            </p>
-          </div>
-        </div>
+        .card-payment-form input,
+        .mobile-payment-form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #0047ab;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-        <!-- If you give me some credit or shoutout here by linking to my github, then it will be a big thing for me and will help me a lot :) -->
-        <div class="main-footer__lower">
-          &copy; Copyright 2024. Made by
-          <a rel="noreferrer" target="_blank" href="https://github.com/Tonni1705"
-            >Anthony Juma</a
-          >
-        </div>
-      </div>
-    </footer>
+        .save-payment-info {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+        }
 
-    <script src="script.js"></script>
-  </body>
-</html>
+        .save-payment-info label {
+            display: flex row;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .save-payment-info input[type="checkbox"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .qr-code-container {
+            display: none;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #paystack-button {
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            font-size: 16px;
+            font-family:Roboto;
+            background-color: #0047ab;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #paystack-button:hover {
+            background-color: #003366;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="summ-container">
+        <table>
+            <tr>
+                <td>Subtotal</td>
+                <td id="subtotal">£76.99</td>
+            </tr>
+            <tr>
+                <td>Tax</td>
+                <td id="tax">£0.00</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td id="total">£78.99</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="payop-container">
+        <button class="active" data-payment="card"><span class="material-icons">credit_card</span></button>
+        <button data-payment="mobile"><span class="material-icons">smartphone</span></button>
+        <button data-payment="crypto"><span class="material-icons">currency_bitcoin</span></button>
+    </div>
+
+    <div class="container" id="payment-form-container">
+        <!-- Dynamic payment form will appear here -->
+    </div>
+
+    <div id="qr-code-container" class="qr-code-container">
+        <!-- QR Code will be generated here for crypto payments -->
+    </div>
+
+    <script>
+        // Payment form containers
+        const paymentFormContainer = document.getElementById("payment-form-container");
+        const qrCodeContainer = document.getElementById("qr-code-container");
+
+        // Payment option buttons
+        const buttons = document.querySelectorAll('.payop-container button');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const paymentType = button.getAttribute('data-payment');
+                loadPaymentForm(paymentType);
+            });
+        });
+
+        // Load the appropriate payment form
+        function loadPaymentForm(paymentType) {
+            paymentFormContainer.innerHTML = ""; // Clear any existing form
+
+            if (paymentType === 'card') {
+                paymentFormContainer.innerHTML = `
+                    <form class="card-payment-form">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" aria-label="Email Address" placeholder="youremail@yahoo.com" required>
+
+                        <label for="card-number">Card Number</label>
+                        <input type="text" id="card-number" name="card-number" placeholder="Card Number" required>
+
+                        <div style="display: flex; gap: 15px;">
+                            <div>
+                                <label for="expiry-date">Expiry Date</label>
+                                <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+                            </div>
+                            <div>
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="CVV" required>
+                            </div>
+                        </div>
+
+                        <div class="save-payment-info">
+                            <input type="checkbox" id="save-payment-info" name="save-payment-info">
+                            <label for="save-payment-info">Save payment information for future use</label>
+                        </div>
+                    </form>
+                    <button id="paystack-button" onclick="payWithPaystack()">Pay with Paystack</button>
+                `;
+            } else if (paymentType === 'mobile') {
+                paymentFormContainer.innerHTML = `
+                    <form class="mobile-payment-form">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" aria-label="Email Address" placeholder="youremail@yahoo.com" required>
+
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                    </form>
+                    <button id="paystack-button" onclick="payWithPaystack()">Pay with Paystack</button>
+                `;
+            } else if (paymentType === 'crypto') {
+                qrCodeContainer.style.display = "block"; // Show the QR Code container
+                generateQRCode('crypto_address_or_data'); // Generate the QR Code for crypto payment
+            }
+        }
+
+        // Function to generate a QR code for cryptocurrency payments
+        function generateQRCode(data)
