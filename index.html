@@ -43,20 +43,6 @@
             font-size: 18px;
             font-weight: bold;
         }
-        .main-button {
-            display: none;
-            width: 100%;
-            padding: 15px;
-            background-color: var(--tg-theme-link-color, #007bff);
-            color: #fff;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-        .main-button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
     </style>
 </head>
 <body>
@@ -75,7 +61,6 @@
             <label for="email">Email:</label>
             <input type="email" id="email" placeholder="Enter your email">
         </div>
-        <button id="mainButton" class="main-button" disabled>Pay Now</button>
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -86,7 +71,34 @@
         const quantityInput = document.getElementById('quantity');
         const totalElement = document.getElementById('total');
         const emailInput = document.getElementById('email');
-        const mainButton = document.getElementById('mainButton');
+
+        // Initialize Telegram Web App
+        Telegram.WebApp.ready();
+
+        // Configure the Main Button
+        Telegram.WebApp.MainButton.setParams({
+            text: 'Pay Now',
+            is_active: false,
+        });
+
+        Telegram.WebApp.MainButton.onClick(() => {
+            const email = emailInput.value;
+            const amount = pricePerUnit * quantity * 100; // Convert to cents
+
+            PaystackPop.setup({
+                key: 'your-public-key', // Replace with your actual Paystack public key
+                email: email,
+                amount: amount,
+                currency: 'USD',
+                callback: function(response) {
+                    alert('Payment Successful! Transaction Reference: ' + response.reference);
+                    Telegram.WebApp.close();
+                },
+                onClose: function() {
+                    alert('Payment Cancelled.');
+                }
+            }).openIframe();
+        });
 
         document.getElementById('decrease').addEventListener('click', () => {
             if (quantity > 1) {
@@ -102,26 +114,11 @@
 
         emailInput.addEventListener('input', () => {
             const emailValid = validateEmail(emailInput.value);
-            mainButton.disabled = !emailValid;
-        });
-
-        mainButton.addEventListener('click', () => {
-            const email = emailInput.value;
-            const amount = pricePerUnit * quantity * 100; // Convert to kobo/cents for Paystack
-
-            PaystackPop.setup({
-                key: 'your-public-key', // Replace with your Paystack public key
-                email: email,
-                amount: amount,
-                currency: 'USD',
-                callback: function(response) {
-                    alert('Payment Successful! Transaction Reference: ' + response.reference);
-                    Telegram.WebApp.close();
-                },
-                onClose: function() {
-                    alert('Payment Cancelled.');
-                }
-            }).openIframe();
+            if (emailValid) {
+                Telegram.WebApp.MainButton.show();
+            } else {
+                Telegram.WebApp.MainButton.hide();
+            }
         });
 
         function updateTotal() {
@@ -134,9 +131,6 @@
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return regex.test(email);
         }
-
-        // Telegram Web App initialization
-        Telegram.WebApp.ready();
     </script>
 </body>
 </html>
