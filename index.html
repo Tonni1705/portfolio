@@ -85,8 +85,9 @@
             const email = emailInput.value;
             const amount = pricePerUnit * quantity * 100; // Convert to cents
 
-            PaystackPop.setup({
-                key: 'your-public-key', // Replace with your actual Paystack public key
+            // Open Paystack Popup
+            const handler = PaystackPop.setup({
+                key: 'pk_test_3bc96abb2edd8d304efb647f238008f7fdfa457d', // Replace with your actual Paystack public key
                 email: email,
                 amount: amount,
                 currency: 'USD',
@@ -97,7 +98,8 @@
                 onClose: function() {
                     alert('Payment Cancelled.');
                 }
-            }).openIframe();
+            });
+            handler.openIframe();
         });
 
         document.getElementById('decrease').addEventListener('click', () => {
