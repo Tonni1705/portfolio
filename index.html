@@ -64,75 +64,87 @@
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script>
-        const pricePerUnit = 20.0;
-        let quantity = 1;
+  <script>
+console.log('Email:', email);
+console.log('Amount in cents:', amount);
+console.log('Quantity:', quantity);
+    const pricePerUnit = 20.0;
+    let quantity = 1;
 
-        const quantityInput = document.getElementById('quantity');
-        const totalElement = document.getElementById('total');
-        const emailInput = document.getElementById('email');
+    const quantityInput = document.getElementById('quantity');
+    const totalElement = document.getElementById('total');
+    const emailInput = document.getElementById('email');
 
-        // Initialize Telegram Web App
-        Telegram.WebApp.ready();
+    // Initialize Telegram Web App
+    Telegram.WebApp.ready();
 
-        // Configure the Main Button
-        Telegram.WebApp.MainButton.setParams({
-            text: 'Pay Now',
-            is_active: false,
-        });
+    // Configure the Main Button
+    Telegram.WebApp.MainButton.setParams({
+        text: 'Pay Now',
+    });
 
-        Telegram.WebApp.MainButton.onClick(() => {
-            const email = emailInput.value;
-            const amount = pricePerUnit * quantity * 100; // Convert to cents
+    // Set up Main Button onClick event
+    Telegram.WebApp.MainButton.onClick(() => {
+        const email = emailInput.value;
+        const amount = Math.round(pricePerUnit * quantity * 100); // Convert to cents
 
-            // Open Paystack Popup
-            const handler = PaystackPop.setup({
-                key: 'pk_test_3bc96abb2edd8d304efb647f238008f7fdfa457d', // Replace with your actual Paystack public key
-                email: email,
-                amount: amount,
-                currency: 'USD',
-                callback: function(response) {
-                    alert('Payment Successful! Transaction Reference: ' + response.reference);
-                    Telegram.WebApp.close();
-                },
-                onClose: function() {
-                    alert('Payment Cancelled.');
-                }
-            });
-            handler.openIframe();
-        });
+        if (!validateEmail(email)) {
+            alert('Invalid email. Please recheck.');
+            return;
+        }
 
-        document.getElementById('decrease').addEventListener('click', () => {
-            if (quantity > 1) {
-                quantity--;
-                updateTotal();
+        // Open Paystack Popup
+        const handler = PaystackPop.setup({
+            key: 'pk_test_3bc96abb2edd8d304efb647f238008f7fdfa457d', // Replace with your actual Paystack public key
+            email: email,
+            amount: amount,
+            currency: 'USD',
+            callback: function(response) {
+                alert('Payment Successful! Transaction Reference: ' + response.reference);
+                Telegram.WebApp.close(); // Close the web app on success
+            },
+            onClose: function() {
+                alert('Payment Cancelled.');
             }
         });
+        handler.openIframe();
+    });
 
-        document.getElementById('increase').addEventListener('click', () => {
-            quantity++;
+    // Quantity controls
+    document.getElementById('decrease').addEventListener('click', () => {
+        if (quantity > 1) {
+            quantity--;
             updateTotal();
-        });
-
-        emailInput.addEventListener('input', () => {
-            const emailValid = validateEmail(emailInput.value);
-            if (emailValid) {
-                Telegram.WebApp.MainButton.show();
-            } else {
-                Telegram.WebApp.MainButton.hide();
-            }
-        });
-
-        function updateTotal() {
-            const total = (pricePerUnit * quantity).toFixed(2);
-            totalElement.textContent = total;
-            quantityInput.value = quantity;
         }
+    });
 
-        function validateEmail(email) {
-            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return regex.test(email);
+    document.getElementById('increase').addEventListener('click', () => {
+        quantity++;
+        updateTotal();
+    });
+
+    // Email validation and Main Button toggling
+    emailInput.addEventListener('input', () => {
+        const emailValid = validateEmail(emailInput.value);
+        if (emailValid) {
+            Telegram.WebApp.MainButton.show();
+        } else {
+            Telegram.WebApp.MainButton.hide();
         }
-    </script>
+    });
+
+    // Update total price
+    function updateTotal() {
+        const total = (pricePerUnit * quantity).toFixed(2);
+        totalElement.textContent = total;
+        quantityInput.value = quantity;
+    }
+
+    // Email validation function
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+</script>
 </body>
 </html>
